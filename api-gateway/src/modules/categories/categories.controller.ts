@@ -22,7 +22,7 @@ export class CategoriesController {
   @Post()
   @UsePipes(ValidationPipe)
   create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
+    this.categoriesService.create(createCategoryDto);
   }
 
   @Get()

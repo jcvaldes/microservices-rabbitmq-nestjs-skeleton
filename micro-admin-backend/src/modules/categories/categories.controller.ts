@@ -36,7 +36,11 @@ export class CategoriesController {
         err.message.includes(ackError),
       );
       if (filterAckError) {
-        await channel.ack(originalMsg);
+        try {
+          await channel.ack(originalMsg);
+        } catch (err) {
+          debugger;
+        }
       }
     }
   }
