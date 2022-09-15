@@ -1,0 +1,12 @@
+@url=http://localhost:3009/api
+### Create category
+
+POST {{url}}/categories
+Content-Type: application/json
+
+{
+  "name": "televisores",
+  "description": "desc1"
+}
+
+
