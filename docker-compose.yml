@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  mongodb-svr1:
+    build:
+      context: ./config/mongo
+      dockerfile: Dockerfile
+    container_name: mongodb-svr1
+    restart: always
+    networks:
+      loyalty_net:
+        ipv4_address: 172.27.0.2
+    volumes:
+      - ./data/mongo-svr1:/data/db
+    ports:
+      - 27017:27017
+      - 28017:28017
+    environment:
+      MONGODB_DATABASE: dbadminbackend
+
+  rabbitmq:
+    container_name: 'rabbitmq'
+    # image: rabbitmq:3.10.7-management-alpine
+    build:
+      context: ./config/rabbitmq
+      dockerfile: Dockerfile
+    restart: always
+    hostname: rmq01
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+    ports:
+      # AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
+    networks:
+      loyalty_net:
+        ipv4_address: 172.27.0.3
+
+networks:
+  loyalty_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.0.0/16
